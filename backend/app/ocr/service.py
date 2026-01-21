@@ -54,3 +54,5 @@ def run_ocr(pil_image):
 
     return extracted
 
+
+
