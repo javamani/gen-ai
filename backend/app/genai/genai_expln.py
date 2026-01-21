@@ -1,102 +1,73 @@
+"""
+Generate human-readable KYC approval / rejection explanations
+using open-source HuggingFace LLM
+"""
+
 from transformers import pipeline
-from typing import Dict, List
 
-class GenAIExplanationEngine:
-    def __init__(
-        self,
-        model_name: str = "mistralai/Mistral-7B-Instruct-v0.2"
-    ):
-        """
-        Initialize HuggingFace text generation pipeline
-        """
-        self.llm = pipeline(
-            task="text-generation",
-            model=model_name,
-            device_map="auto",
-            max_new_tokens=300,
-            do_sample=False,   # deterministic output (important for audit)
-            temperature=0.2
-        )
+MODEL_NAME = "mistralai/Mistral-7B-Instruct-v0.2"
 
-    def _build_prompt(
-        self,
-        extracted_data: Dict,
-        risk_score: float,
-        compliance_rules: List[Dict],
-        final_decision: str
-    ) -> str:
-        """
-        Build structured prompt for explanation generation
-        """
+llm = pipeline(
+    "text-generation",
+    model=MODEL_NAME,
+    device_map="auto",
+    max_new_tokens=400
+)
 
-        rules_text = "\n".join(
-            [f"- {rule['content']}" for rule in compliance_rules]
-        )
+@router.post("/evaluate")
+def evaluate_kyc(request: ComplianceRequest):
+    """
+    Orchestrates:
+    1. RAG-based RBI rule retrieval
+    2. GenAI explanation
+    """
 
-        prompt = f"""
-You are a banking compliance assistant.
+    query = "KYC compliance verification based on extracted identity data"
 
-Your task is to EXPLAIN the KYC decision in a clear, professional,
-auditor-friendly manner.
+    rules = retrieve_compliance_rules(query)
 
-Do NOT invent facts.
-Do NOT reference internal AI systems.
-Base your explanation ONLY on the provided data and RBI rules.
+    explanation = generate_kyc_explanation(
+        extracted_data=request.extracted_data,
+        risk_score=request.risk_score,
+        compliance_rules=rules
+    )
 
-=====================
-EXTRACTED KYC DATA
-=====================
+    decision = "REJECTED" if request.risk_score >= 60 else "APPROVED"
+
+    return {
+        "decision": decision,
+        "risk_score": request.risk_score,
+        "compliance_rules": rules,
+        "explanation": explanation
+    }
+    
+def generate_kyc_explanation(
+    extracted_data: dict,
+    risk_score: int,
+    compliance_rules: list
+):
+    decision = "REJECTED" if risk_score >= 60 else "APPROVED"
+
+    prompt = f"""
+You are a banking compliance officer.
+
+KYC Decision: {decision}
+
+Extracted Customer Data:
 {extracted_data}
 
-=====================
-KYC RISK SCORE
-=====================
-Risk Score: {risk_score} / 100
+Calculated Risk Score: {risk_score}
 
-=====================
-RELEVANT RBI KYC RULES
-=====================
-{rules_text}
+Relevant RBI KYC Compliance Rules:
+{compliance_rules}
 
-=====================
-FINAL HUMAN DECISION
-=====================
-{final_decision}
+Explain clearly:
+- Why the case was {decision}
+- What rules were satisfied or violated
+- What corrective action (if any) is required
 
-=====================
-INSTRUCTIONS
-=====================
-- If approved: explain why risk is acceptable
-- If rejected: clearly state deficiencies
-- Reference RBI rules where applicable
-- Use simple, professional banking language
-- Maximum 2 short paragraphs
-
-EXPLANATION:
+Use professional banking language.
 """
-        return prompt
 
-    def generate_explanation(
-        self,
-        extracted_data: Dict,
-        risk_score: float,
-        compliance_rules: List[Dict],
-        final_decision: str
-    ) -> str:
-        """
-        Generate explanation text for checker & audit teams
-        """
-
-        prompt = self._build_prompt(
-            extracted_data,
-            risk_score,
-            compliance_rules,
-            final_decision
-        )
-
-        response = self.llm(prompt)[0]["generated_text"]
-
-        # Remove prompt from output (safe cleanup)
-        explanation = response.replace(prompt, "").strip()
-
-        return explanation
+    response = llm(prompt)
+    return response[0]["generated_text"]
