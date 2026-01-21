@@ -1,17 +1,33 @@
-from .models import KYCApplication, CustomerProfile
-from uuid import uuid4
+import os
+import shutil
+from fastapi import UploadFile, HTTPException
 
-kyc_db = {}   # temporary in-memory store
+UPLOAD_DIR = "uploads"
+ALLOWED_EXTENSIONS = ["pdf", "jpg", "jpeg", "png"]
 
-def create_kyc_case(customer_data, maker_id):
-    case_id = str(uuid4())
-    customer = CustomerProfile(**customer_data.dict())
-    kyc = KYCApplication(id=case_id, customer=customer, maker_id=maker_id)
-    kyc_db[case_id] = kyc
-    return kyc
+# Create uploads directory if not exists
+os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-def attach_document(case_id, file_path):
-    kyc_db[case_id].document_path = file_path
 
-def get_case(case_id):
-    return kyc_db.get(case_id)
+def save_uploaded_file(file: UploadFile):
+    filename = file.filename
+    extension = filename.split(".")[-1].lower()
+
+    # Validate file type
+    if extension not in ALLOWED_EXTENSIONS:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file type. Only PDF, JPG, PNG are allowed."
+        )
+
+    file_path = os.path.join(UPLOAD_DIR, filename)
+
+    # Save file temporarily
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    return {
+        "filename": filename,
+        "path": file_path,
+        "status": "uploaded"
+    }
