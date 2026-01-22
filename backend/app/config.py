@@ -1,7 +1,7 @@
-"""
-Centralized application configuration.
+import os
 
-- Environment variables
-- Database settings
-- Security settings
-"""
+# MongoDB URL (can override via environment variable)
+MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+
+# Upload directory
+UPLOAD_DIR = os.getenv("UPLOAD_DIR", "./uploads")

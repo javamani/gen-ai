@@ -1,16 +1,17 @@
 from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
+from typing import List
+from datetime import date
 
-class CustomerProfile(BaseModel):
-    name: str
-    dob: str
-    address: str
+class Document(BaseModel):
+    doc_type: str   # PAN, Aadhaar, Passport
+    filename: str
+    url: str        # file path or storage URL
 
-class KYCApplication(BaseModel):
-    id: Optional[str] = None
-    customer: CustomerProfile
+class CustomerCase(BaseModel):
+    case_id: str | None = None
     maker_id: str
-    document_path: Optional[str] = None
+    name: str
+    dob: date
+    address: str
+    documents: List[Document] = []
     status: str = "DRAFT"
-    created_at: datetime = datetime.utcnow()
