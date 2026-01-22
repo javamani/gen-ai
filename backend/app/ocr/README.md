@@ -1,16 +1,21 @@
-# OCR Module
+# AI-Driven KYC Onboarding System
 
-## Purpose
-Extracts raw text from uploaded KYC documents.
+This project implements an AI-powered Know Your Customer (KYC)
+onboarding and compliance assistant using open-source technologies.
 
-## Current Implementation
-Mock OCR logic for development and testing.
+## Key Features
+- Maker–Checker workflow
+- OCR & NLP-based document analysis
+- Risk scoring & anomaly detection
+- RAG-based compliance reasoning
+- GenAI-powered decision explanation
 
-## Input
-File path of uploaded document.
+## Tech Stack
+- Backend: FastAPI (Python)
+- Frontend: React
+- Database: MongoDB
+- AI: PaddleOCR, spaCy, FAISS, LangChain, HuggingFace LLMs
 
-## Output
-Raw extracted text.
-
-## Future Enhancement
-Replace mock logic with PaddleOCR for real text extraction.
+## Team Collaboration
+This repository is designed for modular development and
+parallel contribution using GitHub branches.

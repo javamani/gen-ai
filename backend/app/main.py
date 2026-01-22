@@ -1,20 +1,19 @@
 from fastapi import FastAPI
 
-# Import routers
-from onboarding.router import router as onboarding_router
-from ocr.router import router as ocr_router
-from nlp.router import router as nlp_router
-from pipeline.router import router as pipeline_router
+# Create FastAPI app FIRST
+app = FastAPI(title="AI-Driven KYC Onboarding System")
 
-# Create FastAPI app
-app = FastAPI(title="AI KYC System")
+# Import routers AFTER app is created
+from app.onboarding.routes import router as onboarding_router
+from app.workflow.routes import router as workflow_router
+from app.ocr.routes import router as ocr_router
 
 # Register routers
 app.include_router(onboarding_router)
+app.include_router(workflow_router)
 app.include_router(ocr_router)
-app.include_router(nlp_router)
-app.include_router(pipeline_router)
 
+# Health check endpoint
 @app.get("/")
-def home():
-    return {"message": "AI KYC System is running"}
+def health_check():
+    return {"status": "KYC system running"}
