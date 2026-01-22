@@ -1,3 +1,4 @@
+
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.onboarding.router import router as onboarding_router
@@ -21,7 +22,15 @@ from app.onboarding.router import router as onboarding_router
 from app.workflow.routes import router as workflow_router
 from app.ocr.routes import router as ocr_router
 
-# Register routers
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 app.include_router(onboarding_router)
 app.include_router(workflow_router)
 app.include_router(ocr_router)

@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+/* Glass Card */
+.glass {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+}
+
+/* Gradient Background */
+.bg-premium {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+/* Upload Box Animation */
+.upload-box {
+  transition: all 0.3s ease;
+}
+.upload-box:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 15px 30px rgba(99, 102, 241, 0.3);
+}
+
+/* Button Glow */
+.btn-glow {
+  background: linear-gradient(135deg, #4f46e5, #9333ea);
+  box-shadow: 0 10px 20px rgba(79, 70, 229, 0.4);
+}
+.btn-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 25px rgba(79, 70, 229, 0.6);
+}
+
+/* Verified Badge */
+.badge-success {
+  background: linear-gradient(135deg, #22c55e, #16a34a);
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.7);
+}
