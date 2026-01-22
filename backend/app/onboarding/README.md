@@ -1,16 +1,21 @@
-# Document Upload Module
+# AI-Driven KYC Onboarding System
 
-## Purpose
-Allows KYC analyst to upload identity documents such as PAN, Aadhaar, or Passport.
+This project implements an AI-powered Know Your Customer (KYC)
+onboarding and compliance assistant using open-source technologies.
 
-## Functions
-- Upload PDF / JPG / PNG documents
-- Validate file type
-- Store files temporarily for OCR processing
+## Key Features
+- Maker–Checker workflow
+- OCR & NLP-based document analysis
+- Risk scoring & anomaly detection
+- RAG-based compliance reasoning
+- GenAI-powered decision explanation
 
-## Technology
-- FastAPI
-- Python file handling
+## Tech Stack
+- Backend: FastAPI (Python)
+- Frontend: React
+- Database: MongoDB
+- AI: PaddleOCR, spaCy, FAISS, LangChain, HuggingFace LLMs
 
-## Output
-Returns uploaded file path which is passed to the OCR module.
+## Team Collaboration
+This repository is designed for modular development and
+parallel contribution using GitHub branches.
