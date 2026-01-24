@@ -1,5 +1,6 @@
 from fastapi import APIRouter, UploadFile, File, HTTPException
-from app.onboarding.models import CustomerCase
+from app.onboarding.models import CustomerCase, CustomerCreateRequest
+from uuid import uuid4
 from app.onboarding.service import create_kyc_case, get_case, add_document
 
 router = APIRouter(prefix="/onboarding", tags=["Onboarding"])
@@ -7,7 +8,20 @@ router = APIRouter(prefix="/onboarding", tags=["Onboarding"])
 
 # ✅ CREATE CASE
 @router.post("/create")
-def create_customer_case(case: CustomerCase):
+def create_case(request: CustomerCreateRequest):
+
+    maker_id = "maker001"  # later from logged-in user
+    
+    case = CustomerCase(
+        case_id=str(uuid4()),
+        maker_id=maker_id,
+        name=request.name,
+        dob=request.dob,
+        address=request.address,
+        documents=[],
+        status="DRAFT"
+    )
+
     case_id = create_kyc_case(case)
     return {
         "case_id": case_id,

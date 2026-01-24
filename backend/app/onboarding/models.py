@@ -15,3 +15,9 @@ class CustomerCase(BaseModel):
     address: str
     documents: List[Document] = []
     status: str = "DRAFT"
+
+
+class CustomerCreateRequest(BaseModel):
+    name: str
+    dob: date
+    address: str
