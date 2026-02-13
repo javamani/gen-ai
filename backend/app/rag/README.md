@@ -1,21 +1,21 @@
-# AI-Driven KYC Onboarding System
+# RAG COMPLIANCE Module
 
-This project implements an AI-powered Know Your Customer (KYC)
-onboarding and compliance assistant using open-source technologies.
+## Purpose
+Retrieve the RBI_KYC rules and check the compliance of the data with the rules.
 
-## Key Features
-- Maker–Checker workflow
-- OCR & NLP-based document analysis
-- Risk scoring & anomaly detection
-- RAG-based compliance reasoning
-- GenAI-powered decision explanation
+## Functions
+- Load RBI KYC documents
+- Retrieve compliance rules
+- Check the compliance of the data
 
-## Tech Stack
-- Backend: FastAPI (Python)
-- Frontend: React
-- Database: MongoDB
-- AI: PaddleOCR, spaCy, FAISS, LangChain, HuggingFace LLMs
+## Technology
+- Langchain
+- FAISS vector
+- FastAPI
 
-## Team Collaboration
-This repository is designed for modular development and
-parallel contribution using GitHub branches.
+## Input
+RBI_KYC document and Query to RAG Engine
+
+## Output
+Retrieved RBI Rules and check the compliance of the data.
+

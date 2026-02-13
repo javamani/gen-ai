@@ -1,21 +1,19 @@
-# AI-Driven KYC Onboarding System
+# GENAI EXPLANATION MODULE
 
-This project implements an AI-powered Know Your Customer (KYC)
-onboarding and compliance assistant using open-source technologies.
+## Purpose
+Give the Final KYC decision and explanation based on the users data compliance score.
 
-## Key Features
-- Maker–Checker workflow
-- OCR & NLP-based document analysis
-- Risk scoring & anomaly detection
-- RAG-based compliance reasoning
-- GenAI-powered decision explanation
+## Functions
+- Evaluate KYC compliance
+- Generate KYC Decision Explanation
 
-## Tech Stack
-- Backend: FastAPI (Python)
-- Frontend: React
-- Database: MongoDB
-- AI: PaddleOCR, spaCy, FAISS, LangChain, HuggingFace LLMs
+## Technology
+- Opensource Hugging Face LLM (mistralai)
+- Sentence Transformer
+- FastAPI
 
-## Team Collaboration
-This repository is designed for modular development and
-parallel contribution using GitHub branches.
+## Input
+Extracted KYC Data and compliance risk score
+
+## Output
+Final KYC Decision status like Approved or Rejected and its explanation.
